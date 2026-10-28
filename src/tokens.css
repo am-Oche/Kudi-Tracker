@@ -1,0 +1,115 @@
+/* KudiTrack AI — design tokens (redesign P1)
+   Brand evolved from the live app: primary #F67300 / dark #D05400 / terracotta #B8492E,
+   success green, navy dark surface. Inter → Urbanist. */
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap');
+
+:root{
+  /* brand */
+  --brand-50:#FFF3E8; --brand-100:#FFE2C7; --brand-300:#FFB06B; --brand-500:#F67300; --brand-600:#D05400; --brand-700:#A84300;
+  --terracotta:#B8492E;
+  /* neutrals (warm) */
+  --ink:#16120E; --ink-2:#4F4842; --ink-3:#7D756D; --ink-4:#ABA39B;
+  --line:rgba(22,18,14,.08); --line-2:rgba(22,18,14,.14);
+  --bg:#F6F3EF; --card:#FFFFFF; --card-2:#FAF8F5; --glass:rgba(255,255,255,.72);
+  --primary-btn:#16120E; --primary-btn-ink:#FFFFFF;
+  /* semantic (never colour-only: always paired with +/− and icon) */
+  --income:#13803F; --income-bg:#E5F5EA;
+  --expense:#C8321F; --expense-bg:#FCEBE7;
+  --savings:#2563EB; --savings-bg:#E8EFFE; --lime:#B7E35A;
+  --credit:#A15C07; --credit-bg:#FDF1DD;
+  /* signature gradients */
+  --grad-header: radial-gradient(120% 90% at 0% 0%, #FFC08C 0%, rgba(255,192,140,0) 60%),
+                 radial-gradient(90% 80% at 100% 10%, #FFE7A0 0%, rgba(255,231,160,0) 60%),
+                 radial-gradient(120% 100% at 60% 100%, #DCF1E2 0%, rgba(220,241,226,0) 70%),
+                 linear-gradient(180deg,#FFE9D4 0%, var(--bg) 100%);
+  --grad-hot: linear-gradient(135deg,#FFA24A 0%, #F67300 48%, #E0442A 100%);
+  --grad-soft: linear-gradient(135deg,#FFE0C2 0%, #FFF1C9 55%, #E3F4E6 100%);
+  /* shape */
+  --r-xs:12px; --r-sm:16px; --r-md:22px; --r-lg:28px; --r-xl:32px; --r-pill:999px;
+  --sh-1:0 1px 2px rgba(22,18,14,.04), 0 6px 18px rgba(22,18,14,.05);
+  --sh-2:0 2px 6px rgba(22,18,14,.05), 0 18px 40px rgba(22,18,14,.10);
+  --sh-hot:0 10px 30px rgba(246,115,0,.38);
+  /* type */
+  --font:'Urbanist', ui-sans-serif, sans-serif;
+  --fs-h:26px; --lh-h:1.2; --fs-sub:20px; --lh-sub:1.3; --fs-body:16px; --lh-body:1.5; --fs-sm:14px; --fs-xs:12.5px;
+  --ease-spring:cubic-bezier(.32,1.25,.5,1); --ease-out:cubic-bezier(.22,1,.36,1);
+  color-scheme:light;
+}
+[data-theme="dark"]{
+  --ink:#F5F1EC; --ink-2:#C9C1B8; --ink-3:#9A9189; --ink-4:#6B645D;
+  --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
+  --bg:#0F1216; --card:#181C22; --card-2:#1E232A; --glass:rgba(24,28,34,.78);
+  --primary-btn:#F5F1EC; --primary-btn-ink:#16120E;
+  --income:#4ADE80; --income-bg:rgba(74,222,128,.12);
+  --expense:#FF7A66; --expense-bg:rgba(255,122,102,.12);
+  --savings:#7FA7FF; --savings-bg:rgba(127,167,255,.13);
+  --credit:#F6B45A; --credit-bg:rgba(246,180,90,.13);
+  --brand-50:rgba(246,115,0,.14); --brand-100:rgba(246,115,0,.22);
+  --grad-header: radial-gradient(120% 90% at 0% 0%, rgba(246,115,0,.38) 0%, rgba(246,115,0,0) 60%),
+                 radial-gradient(90% 80% at 100% 10%, rgba(255,200,90,.18) 0%, rgba(255,200,90,0) 60%),
+                 radial-gradient(120% 100% at 60% 100%, rgba(74,222,128,.10) 0%, rgba(74,222,128,0) 70%),
+                 linear-gradient(180deg,#22180F 0%, var(--bg) 100%);
+  --grad-soft: linear-gradient(135deg,rgba(246,115,0,.22), rgba(255,200,90,.12) 55%, rgba(74,222,128,.10));
+  --sh-1:0 1px 2px rgba(0,0,0,.3), 0 8px 22px rgba(0,0,0,.25);
+  --sh-2:0 2px 8px rgba(0,0,0,.35), 0 20px 44px rgba(0,0,0,.4);
+  color-scheme:dark;
+}
+/* header gradient variants (Tweaks) */
+[data-grad="sunrise"]{ }
+[data-grad="market"]:not([data-theme="dark"]){
+  --grad-header: radial-gradient(110% 90% at 0% 0%, #FFB37A 0%, rgba(255,179,122,0) 60%),
+                 radial-gradient(90% 80% at 100% 0%, #FFD36B 0%, rgba(255,211,107,0) 60%),
+                 linear-gradient(180deg,#FFE3C4 0%, var(--bg) 100%);
+}
+[data-grad="cool"]:not([data-theme="dark"]){
+  --grad-header: radial-gradient(110% 90% at 0% 0%, #FFCDA4 0%, rgba(255,205,164,0) 55%),
+                 radial-gradient(100% 90% at 100% 10%, #D7E8FF 0%, rgba(215,232,255,0) 60%),
+                 linear-gradient(180deg,#FDEBDD 0%, var(--bg) 100%);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:var(--font);font-size:var(--fs-body);line-height:var(--lh-body);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+button{font-family:inherit;color:inherit}
+input,textarea,select{font-family:inherit;color:inherit}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum";letter-spacing:-.01em}
+.h{font-size:var(--fs-h);line-height:var(--lh-h);font-weight:600;letter-spacing:-.015em;margin:0}
+.sub{font-size:var(--fs-sub);line-height:var(--lh-sub);font-weight:600;letter-spacing:-.01em;margin:0}
+.muted{color:var(--ink-3)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:3px solid var(--brand-500);outline-offset:2px;border-radius:12px}
+.kt-card{background:var(--card);border-radius:var(--r-lg);box-shadow:var(--sh-1);border:1px solid var(--line)}
+.kt-btn{min-height:52px;border:0;border-radius:var(--r-pill);padding:0 22px;font-size:16px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;white-space:nowrap;transition:transform .15s var(--ease-out), background .2s}
+.kt-btn:active{transform:scale(.97)}
+.kt-btn-primary{background:var(--primary-btn);color:var(--primary-btn-ink)}
+.kt-btn-ghost{background:var(--card-2);color:var(--ink);border:1px solid var(--line)}
+.kt-btn-hot{background:var(--grad-hot);color:#fff;box-shadow:var(--sh-hot)}
+.kt-iconbtn{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(10px);cursor:pointer;flex:none;position:relative}
+.kt-chip{min-height:40px;padding:0 16px;border-radius:var(--r-pill);border:1px solid var(--line-2);background:var(--card);font-size:15px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:background .2s,color .2s,border-color .2s}
+.kt-chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.kt-input{width:100%;min-height:52px;border-radius:var(--r-sm);border:1px solid var(--line-2);background:var(--card);padding:0 16px;font-size:16px;outline:none}
+.kt-input:focus{border-color:var(--brand-500);box-shadow:0 0 0 4px var(--brand-50)}
+.kt-label{font-size:13px;font-weight:600;color:var(--ink-3);letter-spacing:.02em;margin:0 0 6px 4px;display:block}
+
+/* motion */
+@keyframes kt-rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.kt-stagger>*{animation:kt-rise .55s var(--ease-out) both}
+.kt-stagger>*:nth-child(1){animation-delay:.02s}.kt-stagger>*:nth-child(2){animation-delay:.07s}.kt-stagger>*:nth-child(3){animation-delay:.12s}.kt-stagger>*:nth-child(4){animation-delay:.17s}.kt-stagger>*:nth-child(5){animation-delay:.22s}.kt-stagger>*:nth-child(6){animation-delay:.27s}.kt-stagger>*:nth-child(7){animation-delay:.32s}.kt-stagger>*:nth-child(n+8){animation-delay:.36s}
+@keyframes kt-shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.kt-skel{position:relative;overflow:hidden;background:var(--card-2);border-radius:14px}
+.kt-skel::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);animation:kt-shimmer 1.3s infinite}
+[data-theme="dark"] .kt-skel::after{background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
+@keyframes kt-pulse{0%{transform:scale(1);opacity:.55}100%{transform:scale(1.9);opacity:0}}
+@keyframes kt-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes kt-pop{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.12);opacity:1}100%{transform:scale(1)}}
+@keyframes kt-ray{0%{transform:rotate(var(--a)) translateY(0) scaleY(.2);opacity:0}30%{opacity:1}100%{transform:rotate(var(--a)) translateY(-64px) scaleY(1);opacity:0}}
+@keyframes kt-grow-x{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes kt-line{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+.kt-tr:hover{background:var(--card-2)}
+@media (hover:hover) and (min-width:640px){ .kt-txrow:hover .kt-rowact{display:flex!important} }
+@keyframes kt-grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes kt-draw{from{stroke-dashoffset:40}to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+.no-scrollbar{scrollbar-width:none}.no-scrollbar::-webkit-scrollbar{display:none}

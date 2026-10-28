@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en-NG">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#F67300" />
+<title>KudiTrack AI — Bookkeeping for Nigerian businesses</title>
+<link rel="stylesheet" href="src/tokens.css" />
+<style>
+  /* responsive shell rules */
+  @media (max-width: 1023px) and (min-width: 640px){
+    .kt-desk{ --kt-side: 84px; }
+    .kt-side-label{ display:none !important; }
+    .kt-side{ align-items:center; }
+    .kt-side .kt-btn{ width:52px; padding:0; }
+  }
+  @media (max-width: 900px){
+    .kt-hero{ grid-template-columns: 1fr !important; }
+    .kt-sitenav{ display:none !important; }
+    .kt-float-a{ left:-4% !important; } .kt-float-b{ right:-4% !important; }
+  }
+  @media (max-width: 760px){ .kt-hide-sm{ display:none !important; } }
+  @media print{ nav, aside, header, .kt-btn{ display:none !important; } }
+  html.kt-phone-preview body{ max-width:430px; margin:0 auto; min-height:100vh; box-shadow:0 0 0 1px var(--line), 0 0 80px rgba(0,0,0,.06); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script src="src/i18n.js"></script>
+<script type="text/babel" src="src/icons.jsx"></script>
+<script type="text/babel" src="src/store.jsx"></script>
+<script type="text/babel" src="src/ui.jsx"></script>
+<script type="text/babel" src="src/sheets.jsx"></script>
+<script type="text/babel" src="src/screens-home.jsx"></script>
+<script type="text/babel" src="src/screens-more.jsx"></script>
+<script type="text/babel" src="src/onboarding.jsx"></script>
+<script type="text/babel" src="src/shells.jsx"></script>
+<script type="text/babel" src="src/landing.jsx"></script>
+<script type="text/babel" src="tweaks_panel.jsx"></script>
+
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "layout": "auto",
+  "theme": "light",
+  "gradient": "sunrise",
+  "lang": "en"
+}/*EDITMODE-END*/;
+
+function Root() {
+  const { state, setPref } = useKT();
+  const [tw, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const isDesk = useIsDesktop();
+  const [route, nav] = useRoute();
+
+  // tweaks → store prefs (store stays the single source of truth)
+  React.useEffect(() => { setPref('theme', tw.theme); }, [tw.theme]);
+  React.useEffect(() => { setPref('lang', tw.lang); }, [tw.lang]);
+
+
+  const urlLayout = new URLSearchParams(location.search).get('layout');
+  const layout = urlLayout || tw.layout;
+  const mode = layout === 'auto' ? (isDesk ? 'desktop' : 'phone') : layout;
+  React.useEffect(() => {
+    document.documentElement.dataset.theme = state.prefs.theme;
+    document.documentElement.dataset.grad = tw.gradient;
+    document.documentElement.classList.toggle('kt-phone-preview', mode === 'phone' && isDesk);
+    document.documentElement.lang = state.prefs.lang === 'en' ? 'en-NG' : state.prefs.lang;
+  }, [state.prefs.theme, tw.gradient, state.prefs.lang, mode, isDesk]);
+  const go = (page) => nav('app', page);
+
+  let view;
+  if (mode === 'phone') {
+    view = <PhoneApp page={route.area === 'app' ? route.page : 'home'} go={go} />;
+  } else if (route.area === 'app') {
+    view = <DesktopApp page={route.page} go={go} toSite={() => nav('')} />;
+  } else {
+    view = <Landing toApp={() => go('home')} />;
+  }
+
+  return (
+    <>
+      {view}
+      <Toast />
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Layout">
+          <TweakRadio label="Preview as" value={tw.layout} onChange={v => setTweak('layout', v)} options={[{ value: 'auto', label: 'Auto' }, { value: 'phone', label: 'Phone' }, { value: 'desktop', label: 'Web' }]} />
+          <TweakButton label="Go to website" onClick={() => { setTweak('layout', 'desktop'); nav(''); }} />
+          <TweakButton label="Replay onboarding (phone)" onClick={() => { setPref('onboarded', false); setTweak('layout', 'phone'); setTimeout(() => location.reload(), 200); }} />
+        </TweakSection>
+        <TweakSection label="Look">
+          <TweakRadio label="Theme" value={tw.theme} onChange={v => setTweak('theme', v)} options={[{ value: 'light', label: 'Light' }, { value: 'dark', label: 'Dark' }]} />
+          <TweakRadio label="Header gradient" value={tw.gradient} onChange={v => setTweak('gradient', v)} options={[{ value: 'sunrise', label: 'Sunrise' }, { value: 'market', label: 'Market' }, { value: 'cool', label: 'Cool' }]} />
+          <TweakRadio label="Language" value={tw.lang} onChange={v => setTweak('lang', v)} options={[{ value: 'en', label: 'English' }, { value: 'pid', label: 'Pidgin' }]} />
+        </TweakSection>
+      </TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<KTStoreProvider><Root /></KTStoreProvider>);
+</script>
+</body>
+</html>
